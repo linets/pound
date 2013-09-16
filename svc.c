@@ -375,7 +375,7 @@ cpURL(char *res, char *src, int len)
 int
 check_header(const char *header, char *const content)
 {
-    regmatch_t  matches[4];
+    regmatch_t  matches[5];
     static struct {
         char    header[32];
         int     len;
@@ -394,7 +394,7 @@ check_header(const char *header, char *const content)
     };
     int i;
 
-    if(!regexec(&HEADER, header, 4, matches, 0)) {
+    if(!regexec(&HEADER, header, 5, matches, 0)) {
         for(i = 0; hd_types[i].len > 0; i++)
             if((matches[1].rm_eo - matches[1].rm_so) == hd_types[i].len
             && strncasecmp(header + matches[1].rm_so, hd_types[i].header, hd_types[i].len) == 0) {
