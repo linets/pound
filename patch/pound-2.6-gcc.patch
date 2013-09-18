@@ -1,0 +1,11 @@
+--- Pound-2.6/configure.orig	2011-12-28 14:57:45.000000000 +0100
++++ Pound-2.6/configure	2011-12-30 14:31:00.000000000 +0100
+@@ -3232,7 +3232,7 @@
+ 
+ if  test "${CC}" = "gcc"
+ then
+-    CPPFLAGS="${CPPFLAGS} -Wstrict-prototypes -Wno-unused-result -pipe"
++    CPPFLAGS="${CPPFLAGS} -Wstrict-prototypes -pipe"
+ fi
+ 
+ { $as_echo "$as_me:${as_lineno-$LINENO}: *** Checking for threads library and/or flags ***" >&5
