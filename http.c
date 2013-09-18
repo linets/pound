@@ -655,8 +655,10 @@ do_http(thr_arg *arg)
             /* no overflow - see check_header for details */
             switch(check_header(headers[n], buf)) {
             case HEADER_HOST:
-                strcpy(v_host, buf);
-                break;
+              memset(headers[n], 0, MAXBUF);
+              snprintf(headers[n], MAXBUF, "Host: %s", buf);
+              strcpy(v_host, buf);
+              break;
             case HEADER_REFERER:
                 strcpy(referer, buf);
                 break;
