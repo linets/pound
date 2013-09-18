@@ -1,5 +1,5 @@
 %define version 2.6
-%define rpmrelease 3
+%define rpmrelease 4
 # betarelease is either 0 or something like b1
 %define betarelease 0
 
