@@ -252,7 +252,7 @@ main(const int argc, char **argv)
     init_timer();
 
     /* prepare regular expressions */
-    if(regcomp(&HEADER, "^([a-z0-9!#$%&'*+.^_`|~-]+):[ \t]*(.*):([0-9+])(.*)[ \t]*$", REG_ICASE | REG_NEWLINE | REG_EXTENDED)
+    if(regcomp(&HEADER, "^([a-z0-9!#$%&'*+.^_`|~-]+):[ \t]*(.*)(:([0-9+])|(.*)[ \t])*$", REG_ICASE | REG_NEWLINE | REG_EXTENDED)
     || regcomp(&CHUNK_HEAD, "^([0-9a-f]+).*$", REG_ICASE | REG_NEWLINE | REG_EXTENDED)
     || regcomp(&RESP_SKIP, "^HTTP/1.1 100.*$", REG_ICASE | REG_NEWLINE | REG_EXTENDED)
     || regcomp(&RESP_IGN, "^HTTP/1.[01] (10[1-9]|1[1-9][0-9]|204|30[456]).*$", REG_ICASE | REG_NEWLINE | REG_EXTENDED)
