@@ -70,7 +70,7 @@ redirect_reply(BIO *const c, const char *url, const int code)
         url, url);
     snprintf(rep, sizeof(rep),
         "HTTP/1.0 %d %s\r\nLocation: %s\r\nContent-Type: text/html\r\nContent-Length: %d\r\n\r\n",
-        code, code_msg, url, strlen(cont));
+             code, code_msg, url, (int)strlen(cont));
     BIO_write(c, rep, strlen(rep));
     BIO_write(c, cont, strlen(cont));
     BIO_flush(c);
@@ -504,6 +504,11 @@ do_http(thr_arg *arg)
     struct linger       l;
     double              start_req, end_req;
 
+
+    regex_t host_port;
+    regmatch_t matches_host[2];
+
+
     from_host = ((thr_arg *)arg)->from_host;
     memcpy(&from_host_addr, from_host.ai_addr, from_host.ai_addrlen);
     from_host.ai_addr = (struct sockaddr *)&from_host_addr;
@@ -655,9 +660,15 @@ do_http(thr_arg *arg)
             /* no overflow - see check_header for details */
             switch(check_header(headers[n], buf)) {
             case HEADER_HOST:
-              memset(headers[n], 0, MAXBUF);
-              snprintf(headers[n], MAXBUF, "Host: %s", buf);
-              strcpy(v_host, buf);
+                regcomp(&host_port, "(.*):(.*)", REG_ICASE | REG_NEWLINE | REG_EXTENDED);
+
+                if(!regexec(&host_port, buf, 2, matches_host, 0)){
+                  strncpy(v_host, buf + matches_host[1].rm_so, matches_host[1].rm_eo - matches_host[1].rm_so);
+                  snprintf(headers[n], MAXBUF, "Host: %s", v_host);
+                } else {
+                  strcpy(v_host, buf);
+                }
+
               break;
             case HEADER_REFERER:
                 strcpy(referer, buf);
